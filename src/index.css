@@ -1,0 +1,131 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'lufga';
+  src: url('./assets/fonts/lufga/LufgaLightItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'lufga';
+  src: url('./assets/fonts/lufga/LufgaMediumItalic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'lufga';
+  src: url('./assets/fonts/lufga/LufgaLight.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'lufga';
+  src: url('./assets/fonts/lufga/LufgaRegular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'lufga';
+  src: url('./assets/fonts/lufga/LufgaMedium.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'lufga';
+  src: url('./assets/fonts/lufga/LufgaSemiBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+}
+
+:root {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #ced4da;
+    margin: 16px 0;
+  }
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 10px;
+  }
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+  }
+}
+
+.pac-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.pac-item {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  font-family: 'lufga';
+  height: 40px;
+}
+.pac-item:hover {
+  background-color: #dee2e6;
+}
+
+.pac-item-selected {
+  background-color: #dee2e6;
+}
+
+.pac-item .pac-icon {
+  display: none;
+}
+.pac-container::after {
+  display: none !important;
+}
+/* instructive point in overriding existing element */
+/*
+  PROBLEM: Wanted to hide "powered by Google" logo in Google Places dropdown
+
+  FAILED ATTEMPTS:
+  - .pac-logo { display: none } ❌
+  - .pac-container .pac-logo { display: none } ❌
+
+  SOLUTION:
+  .pac-container::after { display: none !important; } ✅
+
+  WHY IT WORKED:
+  Google uses ::after pseudo-element to generate logo content, not actual HTML elements.
+  The .pac-logo class exists but is empty - the ::after contains the visible logo.
+
+  LESSON: Always inspect the actual implementation (pseudo-elements, generated content) 
+  when overriding third-party styles, don't assume class names contain the content.
+  */
+
+.pac-container {
+  border-radius: 10px;
+}
+
+.pac-item-query {
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.pac-item span {
+  margin-left: 5px;
+}
+
+.custom-border {
+  width: 1px;
+  height: 100px;
+  background-color: #adb5bd;
+}
