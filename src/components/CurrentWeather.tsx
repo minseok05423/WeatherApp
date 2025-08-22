@@ -22,11 +22,8 @@ const CurrentWeather = () => {
     geoLoading,
     setGeoLoading,
   } = useGeolocation();
-  const { error, SearchWeather } = useWeatherAPI(setGeoLoading);
-  const { ReverseGeocoding } = useReverseGeocoding(
-    setGeoLoading,
-    setGeolocationError
-  );
+  const { SearchWeather } = useWeatherAPI(setGeoLoading);
+  const { ReverseGeocoding } = useReverseGeocoding(setGeolocationError);
 
   useEffect(() => {
     setGeoLoading(true);

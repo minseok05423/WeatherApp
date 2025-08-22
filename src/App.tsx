@@ -1,17 +1,14 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import CityList from './components/CityList';
-import ErrorMessage from './components/ErrorMessage';
 import LoadingSpinner from './components/LoadingSpinner';
 import MainCity from './components/MainCity';
 import { useWeatherAPI } from './hooks/useWeatherAPI';
 import { elementContext } from './context/ElementContext';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import CurrentWeather from './components/CurrentWeather';
-import { GetWeatherIcon } from './utils/weatherIcon';
 import Bookmark from './assets/icons/bookmark.svg?react';
-import { LoaderStatus } from '@googlemaps/js-api-loader';
 
 export interface City {
   cityInfo: [name: string, region: string, country: string, coordinate: string];
@@ -38,11 +35,8 @@ const App = () => {
   const { error, setError, SearchWeather } = useWeatherAPI(setLoading);
   // destructuring uses keys not order, it can take more variables than it is defined in one statement
 
-  const {
-    error: refreshError,
-    setError: setRefreshError,
-    SearchWeather: RefreshSearchWeather,
-  } = useWeatherAPI(setRefresh);
+  const { error: refreshError, SearchWeather: RefreshSearchWeather } =
+    useWeatherAPI(setRefresh);
 
   useEffect(() => {
     const interval = setInterval(() => {

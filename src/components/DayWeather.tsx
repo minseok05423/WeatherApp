@@ -4,7 +4,6 @@ import HourWeatherCard from './HourlyWeatherCard';
 
 const DayWeather = ({ selectedCity }: { selectedCity: City }) => {
   // proper destructuring to avoid type errors
-  const currentDate = selectedCity.weather.location.localtime.slice(0, 10);
   const currentHour = Number(
     selectedCity.weather.location.localtime.slice(11, 13)
   );

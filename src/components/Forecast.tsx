@@ -1,4 +1,3 @@
-import React from 'react';
 import type { City } from '../App';
 import ForecastCard from './ForecastCard';
 

@@ -1,6 +1,4 @@
-import React from 'react';
 import type { City } from '../App';
-import { GetWeatherIcon } from '../utils/weatherIcon';
 import { FormatTime } from './MainCity';
 import Temp from '../assets/icons/celcius.svg?react';
 import Humidity from '../assets/icons/liquid-drop.svg?react';

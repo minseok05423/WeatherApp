@@ -1,9 +1,6 @@
 const MAPS_API_KEY = import.meta.env.VITE_GOOGLEMAPS_API_KEY;
 
-export function useReverseGeocoding(
-  setLoading: (loading: boolean | null) => void,
-  setError: (error: string | null) => void
-) {
+export function useReverseGeocoding(setError: (error: string | null) => void) {
   const ReverseGeocoding = async (lat: number, lng: number) => {
     setError(null);
 
