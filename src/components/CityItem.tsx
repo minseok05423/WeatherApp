@@ -14,8 +14,8 @@ const CityItem = ({
   const region = cityInfo[1];
   const country = cityInfo[2];
   const MainIcon = GetWeatherIcon(
-    weather.current.condition.code,
-    weather.current.condition.text
+    weather?.current?.condition?.code || 0,
+    weather?.current?.condition?.text || null
   );
   const Temp = GetWeatherIcon(0, null);
   const Humidity = GetWeatherIcon(3, null);
@@ -23,10 +23,11 @@ const CityItem = ({
 
   return (
     <div
-      className={`w-[260px] min-h-[100px] relative cursor-pointer rounded-[20px] ${selectedElementId === id ? 'bg-[#adb5bd]' : 'bg-white'} border border-[#adb5bd]`}
+      className={`w-[260px] min-h-[100px] relative cursor-pointer rounded-[20px] ${selectedElementId === id ? 'bg-[#dee2e6] shadow-[12px_12px_10px_0_rgba(0,0,0,0.25)]' : 'bg-white shadow-[5px_5px_10px_0_rgba(0,0,0,0.2)]'} border border-[#adb5bd] `}
       onClick={() => {
         setSelectedElementId(id);
       }}
+      id={`${id}`}
     >
       <div className="flex flex-col pt-[20px] pl-[20px] pb-[10px]">
         <div className="max-w-[120px]">
@@ -41,15 +42,15 @@ const CityItem = ({
         <div className="flex flex-row w-[220px] justify-between mt-[10px]">
           <div className="flex flex-row">
             <Temp />
-            <div className="ml-[5px]">{`${weather.current.temp_c}°`}</div>
+            <div className="ml-[5px]">{`${weather?.current?.temp_c || '--'}°`}</div>
           </div>
           <div className="flex flex-row">
             <Humidity />
-            <div className="ml-[5px]">{`${weather.current.humidity}%`}</div>
+            <div className="ml-[5px]">{`${weather?.current?.humidity || '--'}%`}</div>
           </div>
           <div className="flex flex-row">
             <Wind />
-            <div className="ml-[5px]">{`${weather.current.wind_kph}km/h`}</div>
+            <div className="ml-[5px]">{`${weather?.current?.wind_kph || '--'}km/h`}</div>
           </div>
         </div>
       </div>
@@ -57,7 +58,7 @@ const CityItem = ({
         className="absolute top-[10px] right-[10px] cursor-pointer"
         onClick={() => HandleDelete(id)}
       >
-        <TrashIcon />
+        <TrashIcon className="w-[25px] h-[25px] stroke-black hover:stroke-[#cc3300] transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110" />
       </button>
     </div>
   );

@@ -26,7 +26,7 @@ const MainCity = ({ selectedCity }: { selectedCity: City }) => {
   return (
     <>
       <div className="flex flex-row items-end">
-        <div className="w-fit m-[20px] px-[40px] h-[80px] flex justify-center items-center rounded-[20px] bg-white">
+        <div className="w-fit m-[20px] px-[40px] h-[80px] flex justify-center items-center rounded-[20px] bg-white border border-[#adb5bd]">
           <div className="flex flex-row items-center">
             <div className="font-semibold text-[32px]">
               {FormatTime(selectedCity.weather.location.localtime)}
@@ -45,7 +45,7 @@ const MainCity = ({ selectedCity }: { selectedCity: City }) => {
             </div>
           </div>
         </div>
-        <div className="w-fit my-[20px] px-[15px] h-[40px] flex justify-center items-center bg-white rounded-[20px] font-medium text-[16px]">
+        <div className="w-fit my-[20px] px-[15px] h-[40px] flex justify-center items-center bg-white rounded-[20px] font-medium text-[16px] border border-[#adb5bd]">
           <div className="flex flex-row items-center mx-[5px]">
             <Temp className="mr-[5px]" />
             <div className="">{`${selectedCity.weather.current.temp_c}°`}</div>

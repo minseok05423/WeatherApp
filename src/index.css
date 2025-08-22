@@ -48,20 +48,38 @@
 }
 
 @layer utilities {
-  .scrollbar::-webkit-scrollbar {
+  .scrollbar1::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-  .scrollbar::-webkit-scrollbar-track {
+  .scrollbar1::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: #ced4da;
+    background: #dee2e6;
     margin: 16px 0;
+    box-shadow: 0px 5px 5px 0 rgba(0, 0, 0, 0.2);
   }
-  .scrollbar::-webkit-scrollbar-thumb {
+  .scrollbar1::-webkit-scrollbar-thumb {
     background: #adb5bd;
     border-radius: 10px;
   }
-  .scrollbar::-webkit-scrollbar-thumb:hover {
+  .scrollbar1::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+  }
+
+  .scrollbar2::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar2::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #dee2e6;
+    margin: 0 5px;
+  }
+  .scrollbar2::-webkit-scrollbar-thumb {
+    background: #adb5bd;
+    border-radius: 10px;
+  }
+  .scrollbar2::-webkit-scrollbar-thumb:hover {
     background: #6c757d;
   }
 }

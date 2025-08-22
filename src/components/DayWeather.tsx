@@ -23,7 +23,7 @@ const DayWeather = ({ selectedCity }: { selectedCity: City }) => {
   }
 
   return (
-    <div className="flex flex-row mx-[20px] h-[140px] overflow-x-auto scrollbar rounded-[10px] bg-white">
+    <div className="flex flex-row mx-[20px] h-[140px] overflow-x-auto scrollbar2 rounded-[10px] bg-white border-t border-x border-[#adb5bd]">
       {hourWeather.map((hour, index) => (
         <React.Fragment key={index}>
           <div className="w-full h-full flex justify-end items-center">

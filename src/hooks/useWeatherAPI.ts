@@ -3,17 +3,19 @@ import { useState } from 'react';
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 // store API keys inside .env file
 
+const forecastDays = 14;
+
 export const useWeatherAPI = (
   setLoading: (loading: boolean | null) => void
 ) => {
   const [error, setError] = useState<string | null>(null);
 
-  const searchWeather = async (city: string | null) => {
+  const SearchWeather = async (city: string | null) => {
     setError(null);
 
     try {
       const response = await fetch(
-        `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${city}&days=5&aqi=no&alerts=no`
+        `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${city}&days=${forecastDays}&aqi=no&alerts=no`
       );
       if (!response.ok) {
         throw new Error(`Weather API error: ${response.status}`);
@@ -33,7 +35,7 @@ export const useWeatherAPI = (
       setError(message);
     }
   };
-  return { error, setError, searchWeather };
+  return { error, setError, SearchWeather };
 };
 
 export default useWeatherAPI;
