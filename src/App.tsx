@@ -53,11 +53,13 @@ const App = () => {
 
   useEffect(() => {
     const UpdateWeather = async () => {
-      setRefresh(true);
-      const newList = await Promise.all(
-        cityList.map((city) => RefreshWeather(city))
-      );
-      setCityList(newList);
+      if (cityList.length !== 0) {
+        setRefresh(true);
+        const newList = await Promise.all(
+          cityList.map((city) => RefreshWeather(city))
+        );
+        setCityList(newList);
+      }
     };
     UpdateWeather();
   }, [hour]);
