@@ -11,6 +11,7 @@ import { useLocalStorage } from './hooks/useLocalStorage';
 import CurrentWeather from './components/CurrentWeather';
 import Bookmark from './assets/icons/bookmark.svg?react';
 import Map from './components/Map';
+import { useReverseGeocoding } from './hooks/useReverseGeocoding';
 
 export interface City {
   cityInfo: [name: string, region: string, country: string, coordinate: string];
@@ -45,6 +46,7 @@ const App = () => {
   const [savedMessage, setSavedMessage] = useState(false);
   const [geoLoaded, setGeoLoaded] = useState(false);
   const [currentLocation, setCurrentLocation] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
 
   // no need to specify the type for the set function as react does that automatically
   const { error, setError, SearchWeather } = useWeatherAPI(setLoading);
@@ -214,16 +216,38 @@ const App = () => {
     return clearTimeout(timer);
   }, []);
 
+  const { ReverseGeocoding } = useReverseGeocoding(setError);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setLoading(true);
+      (async () => {
+        const lat = Number(selectedLocation?.split(' ')[0]);
+        const lng = Number(selectedLocation?.split(' ')[1]);
+        const location = await ReverseGeocoding(lat, lng);
+        const locationName =
+          location.results?.[3]?.formatted_address ??
+          location.results?.[4]?.formatted_address ??
+          location.results?.[5]?.formatted_address ??
+          'Unknown location';
+        HandleSearchValue(locationName, selectedLocation, Date.now());
+      })();
+    }
+  }, [selectedLocation]);
+
   return (
     <div className="bg-white font-[lufga]">
       <div className="grid lg:grid-cols-[400px_minmax(720px,1440px)] grid-rows-[40px_minmax(984px,_1fr)]">
         <div className="col-start-1 row-start-2 bg-[#f8f9fa] rounded-[20px] shadow-[10px_10px_10px_0_rgba(0,0,0,0.2)]">
-          <div className="m-[20px]">
+          <div className="m-[20px] border border-[#adb5bd] rounded-[20px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.2)]">
             {geoLoaded && (
               <Map
                 props={isLoaded}
                 position={
                   selectedCity ? selectedCity.cityInfo[3] : currentLocation
+                }
+                selectedLocation={(coordinate) =>
+                  setSelectedLocation(coordinate)
                 }
               />
             )}
@@ -271,7 +295,7 @@ const App = () => {
             {!errorMessage && (
               <>
                 <div
-                  className={`w-1/2 mt-[20px] ${loadingMessage ? 'font-semibold text-[#7ADAA5]' : 'font-light italic text-black'}`}
+                  className={`min-w-1/2 mt-[20px] ${loadingMessage ? 'font-semibold text-[#7ADAA5]' : 'font-light italic text-black'}`}
                 >
                   {loadingMessage ? (
                     <div className="flex flex-row items-center">
@@ -281,7 +305,13 @@ const App = () => {
                       <span className="ml-[10px]">{loadingMessage}</span>
                     </div>
                   ) : (
-                    'pro tip: you can save cities and select them from the list in the left to view them'
+                    <>
+                      pro tip:
+                      <span className="font-medium"> ctrl + scroll</span> to
+                      zoom in and out of the map and
+                      <span className="font-medium"> click</span> to select the
+                      location in the map
+                    </>
                   )}
                 </div>
               </>
