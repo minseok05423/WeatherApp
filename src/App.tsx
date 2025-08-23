@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useEffect, useState } from 'react';
+import { useJsApiLoader } from '@react-google-maps/api';
 import SearchBar from './components/SearchBar';
 import CityList from './components/CityList';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -9,6 +10,7 @@ import { elementContext } from './context/ElementContext';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import CurrentWeather from './components/CurrentWeather';
 import Bookmark from './assets/icons/bookmark.svg?react';
+import Map from './components/Map';
 
 export interface City {
   cityInfo: [name: string, region: string, country: string, coordinate: string];
@@ -17,7 +19,18 @@ export interface City {
   // json files contain various types, so unless specified, use any type
 }
 
+const libraries: 'places'[] = ['places'];
+// Static array prevents "LoadScript reloaded unintentionally" performance warnings
+// o.w. it would load the libraries every re-render
+// Literal type 'places'[] restricts to valid Google Maps libraries vs generic string[]
+
 const App = () => {
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLEMAPS_API_KEY,
+    libraries: libraries,
+  });
+  // if i were to make a hook, i would have had to make a function, not just export a variable
+
   const [cityList, setCityList] = useLocalStorage<City[]>('cityList', []);
   const [searchResult, setSearchResult] = useState<City | null>(null);
   const [loading, setLoading] = useState<boolean | null>(null);
@@ -30,6 +43,8 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
   const [savedMessage, setSavedMessage] = useState(false);
+  const [geoLoaded, setGeoLoaded] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState<string | null>(null);
 
   // no need to specify the type for the set function as react does that automatically
   const { error, setError, SearchWeather } = useWeatherAPI(setLoading);
@@ -116,8 +131,15 @@ const App = () => {
     coordinate: string | null,
     id: number | null
   ) => {
-    if (name && coordinate && id) {
-      const result = await SearchWeather(coordinate);
+    if (name && id) {
+      let result;
+      // define it outside the if statements to use in the outer scope
+      if (coordinate) {
+        result = await SearchWeather(coordinate);
+      } else {
+        result = await SearchWeather(name);
+        coordinate = `${result.location.lat} ${result.location.lon}`;
+      }
       const resultLocation: [string, string, string, string] = [
         name,
         result.location.region,
@@ -187,12 +209,24 @@ const App = () => {
 
   useEffect(() => setSavedMessage(false), [loading, selectedCity]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => setGeoLoaded(true), 2000);
+    return clearTimeout(timer);
+  }, []);
+
   return (
     <div className="bg-white font-[lufga]">
       <div className="grid lg:grid-cols-[400px_minmax(720px,1440px)] grid-rows-[40px_minmax(984px,_1fr)]">
         <div className="col-start-1 row-start-2 bg-[#f8f9fa] rounded-[20px] shadow-[10px_10px_10px_0_rgba(0,0,0,0.2)]">
           <div className="m-[20px]">
-            <div className="w-[360px] h-[360px] bg-amber-200"></div>
+            {geoLoaded && (
+              <Map
+                props={isLoaded}
+                position={
+                  selectedCity ? selectedCity.cityInfo[3] : currentLocation
+                }
+              />
+            )}
           </div>
           <div className="flex flex-col items-center w-[320px] h-[520px] mt-[40px] mx-[40px] bg-[#F4F5F7] rounded-[20px] font-medium text-[16px] border border-[#adb5bd] shadow-[inset_2px_2px_5px_0_rgba(0,0,0,0.2)]">
             <div className="flex justify-center items-center w-[280px] min-h-[40px] m-[20px] bg-[#F8F9FA] border border-[#adb5bd] rounded-[20px] font-semibold shadow-[2px_2px_10px_0_rgba(0,0,0,0.2)]">
@@ -211,7 +245,12 @@ const App = () => {
         </div>
         <div className="col-start-2 row start-2 min-w-[1040px]">
           <div className="m-[40px] flex flex-col items-center">
-            <CurrentWeather />
+            <CurrentWeather
+              onGeoComplete={(formattedCoordinates) => {
+                setGeoLoaded(true);
+                setCurrentLocation(formattedCoordinates);
+              }}
+            />
             <div className="w-full h-[80px] my-[40px] flex justify-center items-center font-semibold text-[64px]">
               Weathering With you
             </div>
@@ -220,6 +259,7 @@ const App = () => {
                 <SearchBar
                   searchValue={HandleSearchValue}
                   setLoading={setLoading}
+                  props={{ isLoaded }}
                 />
               </div>
             </div>

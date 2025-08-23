@@ -147,3 +147,35 @@
   height: 100px;
   background-color: #adb5bd;
 }
+
+a div {
+  display: none;
+}
+
+.gm-style .gm-style-cc {
+  display: none !important;
+}
+
+.gm-bundled-control {
+  display: none !important;
+}
+
+.gm-style * {
+  font-family: lufga !important;
+}
+
+button[aria-label*='Show street map'] {
+  border-radius: 10px 0 0 10px !important;
+}
+
+button[aria-label*='Show satellite imagery'] {
+  border-radius: 0 10px 10px 0 !important;
+}
+
+ul[role='menu'] {
+  display: none !important;
+}
+
+button[aria-label*='Toggle fullscreen view'] {
+  border-radius: 10px !important;
+}

@@ -10,7 +10,11 @@ const Temp = GetWeatherIcon(0, null);
 const Humidity = GetWeatherIcon(3, null);
 const Wind = GetWeatherIcon(2, null);
 
-const CurrentWeather = () => {
+const CurrentWeather = ({
+  onGeoComplete,
+}: {
+  onGeoComplete: (formattedCoordinates: string | null) => void;
+}) => {
   const [location, setLocation] = useState();
   const [locationWeather, setLocationWeather] = useState<any>();
   // do not! do this for type safety
@@ -42,6 +46,14 @@ const CurrentWeather = () => {
     } else {
       setGeoLoading(false);
     }
+
+    let formattedCoordinates;
+    if (coordinates) {
+      formattedCoordinates = `${coordinates[0]} ${coordinates[1]}`;
+    } else {
+      formattedCoordinates = null;
+    }
+    onGeoComplete(formattedCoordinates);
   }, [coordinates, geolocationError]);
 
   return (

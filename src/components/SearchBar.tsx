@@ -1,8 +1,5 @@
-import { useJsApiLoader, StandaloneSearchBox } from '@react-google-maps/api';
+import { StandaloneSearchBox } from '@react-google-maps/api';
 import { useState, useRef, useEffect } from 'react';
-
-const MAPS_API_KEY = import.meta.env.VITE_GOOGLEMAPS_API_KEY;
-const libraries: 'places'[] = ['places'];
 
 interface Search {
   searchValue: (
@@ -11,9 +8,10 @@ interface Search {
     id: number | null
   ) => void;
   setLoading: (loading: boolean | null) => void;
+  props: { isLoaded: boolean };
 }
 
-const SearchBar = ({ searchValue, setLoading }: Search) => {
+const SearchBar = ({ searchValue, setLoading, props }: Search) => {
   const [searchInput, setSearchInput] = useState('');
   const [isPlace, setIsPlace] = useState(false);
   const isPlaceRef = useRef(false);
@@ -23,10 +21,7 @@ const SearchBar = ({ searchValue, setLoading }: Search) => {
   }, [isPlace]);
   // useEffect and useRef for resolving stale closure
 
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: MAPS_API_KEY,
-    libraries,
-  });
+  const { isLoaded } = props;
 
   const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
 

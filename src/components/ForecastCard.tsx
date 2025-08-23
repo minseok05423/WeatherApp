@@ -11,7 +11,7 @@ const ForecastCard = ({ forecast }: { forecast: Forecast }) => {
   const date = forecast.date;
 
   return (
-    <div className="border border-[#adb5bd] px-[20px] w-[160px] h-[270px] flex flex-col items-center relative rounded-[10px] bg-white shadow-[5px_5px_5px_5px_rgba(0,0,0,0.1)]">
+    <div className="border border-[#adb5bd] px-[20px] w-[180px] h-[270px] flex flex-col items-center relative rounded-[10px] bg-white shadow-[5px_5px_5px_5px_rgba(0,0,0,0.1)]">
       <div className="w-full h-[40px] flex justify-center items-center border-b border-[#ced4da]">
         {date}
       </div>
