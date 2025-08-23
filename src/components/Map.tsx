@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { type CSSProperties } from 'react';
 
 function Map({
   props,
-  position = '-34.745 -38.523',
+  position = '37.4648 126.9572',
   selectedLocation,
 }: {
   props: boolean;
@@ -21,8 +21,8 @@ function Map({
   const lngPos = position?.split(' ')[1];
 
   const center = {
-    lat: Number(latPos) || -34.745,
-    lng: Number(lngPos) || -38.523,
+    lat: Number(latPos) || 37.4648,
+    lng: Number(lngPos) || 126.9572,
   };
   const isLoaded = props;
 
@@ -45,9 +45,13 @@ function Map({
           zoom={10}
           onClick={(e) => {
             selectedLocation(`${e.latLng?.lat()} ${e.latLng?.lng()}`);
-            console.log(`${e.latLng?.lat()} ${e.latLng?.lng()}`);
           }}
-        ></GoogleMap>
+        >
+          <Marker
+            position={center}
+            icon={'/src/assets/icons/pin-destination.svg'}
+          />
+        </GoogleMap>
       )}
     </>
   );
