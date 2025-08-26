@@ -8,7 +8,6 @@ const CityList = ({
   cityList: City[];
   HandleDelete: (id: number) => void;
 }) => {
-  // {cityListL: City[]} is needed as {cityList} is an object nesting an array
   return (
     <div className="flex flex-col gap-[10px] w-full">
       {cityList.map((cityItem) => (
