@@ -17,7 +17,8 @@ export interface City {
   cityInfo: [name: string, region: string, country: string, coordinate: string];
   id: number;
   weather: any;
-  // json files contain various types, so unless specified, use any type
+  // JSON APIs can return various structures, but your specific API returns predictable data.
+  //  Define interfaces that match your API response structure for better type safety.
 }
 
 const libraries: 'places'[] = ['places'];
@@ -50,7 +51,7 @@ const App = () => {
 
   // no need to specify the type for the set function as react does that automatically
   const { error, setError, SearchWeather } = useWeatherAPI(setLoading);
-  // destructuring uses keys not order, it can take more variables than it is defined in one statement
+  // Destructuring extracts properties by name, not position
 
   const { error: refreshError, SearchWeather: RefreshSearchWeather } =
     useWeatherAPI(setRefresh);
@@ -347,10 +348,18 @@ const App = () => {
     // SVG attributes override CSS properties - remove stroke="currentColor" from SVG to let
     // Tailwind stroke-* classes work
 
-    // line-height of a text could collapse the container
-    // use min-h to override
-    // shrink-0 + w-full to overrided the items-center shrink
-    // w-fit to wrap the text perfectly
+    // min-h prevents text line-height from collapsing container height
+    // Text with small line-height can make containers shorter than expected
+    // min-h ensures containers maintain minimum visual height
+
+    // shrink-0 + w-full combination overrides flex item shrinking
+    // flex items shrink by default when space is limited
+    // shrink-0 prevents unwanted compression of important elements
+
+    // w-fit creates tight-fitting containers around content
+    // Container width matches content width exactly
+    // Prevents unnecessary whitespace around text/elements
+    // Useful for buttons, tags, and dynamic content sizing
 
     // logic to hide spinner when loading is false
     //.find might not be able to find such object and thus, return undefined
@@ -358,8 +367,3 @@ const App = () => {
 };
 
 export default App;
-
-// <div>
-// <ErrorMessage error={error} />
-// </div>
-// <div>{loading && <LoadingSpinner />}</div>

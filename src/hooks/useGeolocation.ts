@@ -32,7 +32,7 @@ export function useGeolocation() {
       HandleError,
       options
     );
-    setInterval(() => {
+    const interval = setInterval(() => {
       setGeoLoading(true);
       navigator.geolocation.getCurrentPosition(
         HandleSuccess,
@@ -40,6 +40,8 @@ export function useGeolocation() {
         options
       );
     }, 600000);
+
+    return clearInterval(interval);
   }, []);
 
   return {
