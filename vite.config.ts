@@ -9,10 +9,12 @@ export default defineConfig({
   resolve: {
     alias: {
       crypto: 'crypto-browserify',
+      stream: 'stream-browserify',
+      buffer: 'buffer',
     },
   },
   define: {
-    'process.env': {},
+    'process.env': '{}',
     global: 'globalThis',
   },
   optimizeDeps: {
@@ -20,6 +22,12 @@ export default defineConfig({
       define: {
         global: 'globalThis',
       },
+    },
+    include: ['buffer', 'crypto-browserify', 'stream-browserify'],
+  },
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
     },
   },
 });
