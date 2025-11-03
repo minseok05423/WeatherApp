@@ -241,7 +241,7 @@ const App = () => {
       <div className="grid lg:grid-cols-[400px_minmax(720px,1440px)] grid-rows-[40px_minmax(984px,_1fr)]">
         <div className="col-start-1 row-start-2 bg-[#f8f9fa] rounded-[20px] shadow-[10px_10px_10px_0_rgba(0,0,0,0.2)]">
           <div className="m-[20px] border border-[#adb5bd] rounded-[20px] shadow-[10px_10px_10px_0px_rgba(0,0,0,0.2)]">
-            {geoLoaded && (
+            {geoLoaded && ( 
               <Map
                 props={isLoaded}
                 position={
